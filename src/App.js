@@ -1,25 +1,93 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useReducer } from 'react';
+ 
+const initialState = {
+  name: {
+      value: '',
+      error: ''
+  },
+  lastName: {
+      value: '',
+      error: ''
+  },
+  email: {
+      value: '',
+      error: ''
+  }
+};
+ 
+function reducer(state, action) {
+  console.log(state, action.payload)
+  console.log(state.name.error)
+  if(action.type === 'name')
+      if(action.payload.length<5){
+        //state.name.error="El nombre es muy corto";
+}
+      
+      
+  
+   
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return {
+        ...state,
+        [action.type]: action.payload
+    };
+}
+
+const App = () => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+ 
+    function handleChange(e) {
+        const { name, value } = e.target;
+        dispatch({
+            type: name,
+            payload: value
+        });
+    }
+
+    const enviarDatos = (event) => {
+      event.preventDefault()
+      
+  }
+
+  
+    return (
+        <div className='container'>
+          <form className="row" onSubmit={enviarDatos}>
+            <div>
+                <label>
+                    <span>Name:</span>{' '}
+                    <input
+                        name="name"
+                        value={state.name.value}
+                        onChange={handleChange}
+                    />
+                </label>
+                <p className="error">{state.name.error}</p>
+            </div>
+            <div>
+                <label>
+                    <span>LastName:</span>{' '}
+                    <input
+                        name="lastName"
+                        value={state.lastName.value}
+                        onChange={handleChange}
+                    />
+                </label>
+            </div>
+            <div>
+                <label>
+                    <span>Email:</span>{' '}
+                    <input
+                        name="email"
+                        value={state.email.value}
+                        onChange={handleChange}
+                    />
+                </label>
+            </div>
+            <button type="submit">Submit</button>
+            </form>
+        </div>
+    );
 }
 
 export default App;
